@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    username: myuser
+    url: jdbc://localhost:5444/demo9
+    password: AZERAZER1234
+    driver-class-name: org.postgresql.Driver
+
+#  liquibase:
+#    change-log:
