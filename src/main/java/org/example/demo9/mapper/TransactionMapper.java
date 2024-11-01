@@ -7,9 +7,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface TransactionMapper {
-
-    @Mapping(target = "sourceAccountId", source = "sourceAccount.id")
-    @Mapping(target = "destinationAccountId", source = "destinationAccount.id")
+    @Mapping(source = "sourceAccount.id", target = "sourceAccountId")
+    @Mapping(source = "destinationAccount.id", target = "destinationAccountId")
     TransactionDTO toDTO(Transaction transaction);
 
     @Mapping(target = "sourceAccount.id", source = "sourceAccountId")

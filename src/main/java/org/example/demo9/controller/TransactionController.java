@@ -1,6 +1,5 @@
 package org.example.demo9.controller;
 
-import jakarta.validation.Valid;
 import org.example.demo9.dto.TransactionDTO;
 import org.example.demo9.service.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<TransactionDTO> createTransaction(@Valid @RequestBody TransactionDTO transactionDTO) {
+    public ResponseEntity<TransactionDTO> createTransaction(@RequestBody TransactionDTO transactionDTO) {
         return ResponseEntity.ok(transactionService.createTransaction(transactionDTO));
     }
 

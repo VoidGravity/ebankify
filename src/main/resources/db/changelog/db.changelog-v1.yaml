@@ -1,0 +1,210 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1730485642859-1
+      author: YouCode
+      changes:
+        - createTable:
+            tableName: bank_accounts
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_bank_accounts
+              - column:
+                  name: account_number
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: balance
+                  type: DECIMAL
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  name: account_type
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 1730485642859-2
+      author: YouCode
+      changes:
+        - createTable:
+            tableName: transactions
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_transactions
+              - column:
+                  name: source_account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: destination_account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: DECIMAL
+                  constraints:
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 1730485642859-3
+      author: YouCode
+      changes:
+        - createTable:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: roles
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 1730485642859-4
+      author: YouCode
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_users
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_of_birth
+                  type: DATE
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 1730485642859-5
+      author: YouCode
+      changes:
+        - addUniqueConstraint:
+            columnNames: account_number
+            constraintName: uc_bank_accounts_accountnumber
+            tableName: bank_accounts
+
+  - changeSet:
+      id: 1730485642859-6
+      author: YouCode
+      changes:
+        - addUniqueConstraint:
+            columnNames: email
+            constraintName: uc_users_email
+            tableName: users
+
+  - changeSet:
+      id: 1730485642859-7
+      author: YouCode
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: bank_accounts
+            constraintName: FK_BANK_ACCOUNTS_ON_USER
+            referencedColumnNames: id
+            referencedTableName: users
+
+  - changeSet:
+      id: 1730485642859-8
+      author: YouCode
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: destination_account_id
+            baseTableName: transactions
+            constraintName: FK_TRANSACTIONS_ON_DESTINATION_ACCOUNT
+            referencedColumnNames: id
+            referencedTableName: bank_accounts
+
+  - changeSet:
+      id: 1730485642859-9
+      author: YouCode
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: source_account_id
+            baseTableName: transactions
+            constraintName: FK_TRANSACTIONS_ON_SOURCE_ACCOUNT
+            referencedColumnNames: id
+            referencedTableName: bank_accounts
+
+  - changeSet:
+      id: 1730485642859-10
+      author: YouCode
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: user_roles
+            constraintName: fk_user_roles_on_user
+            referencedColumnNames: id
+            referencedTableName: users
