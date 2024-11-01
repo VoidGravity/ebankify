@@ -1,12 +1,12 @@
 package org.example.demo9.controller;
 
+import jakarta.validation.Valid;
 import org.example.demo9.dto.TransactionDTO;
 import org.example.demo9.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController

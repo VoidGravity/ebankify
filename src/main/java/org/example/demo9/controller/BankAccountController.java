@@ -1,13 +1,13 @@
 package org.example.demo9.controller;
 
 
+import jakarta.validation.Valid;
 import org.example.demo9.dto.BankAccountDTO;
 import org.example.demo9.service.BankAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController

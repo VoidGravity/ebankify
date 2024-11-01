@@ -1,9 +1,28 @@
 spring:
   datasource:
+    url: jdbc:postgresql://localhost:5444/demo9
     username: myuser
-    url: jdbc://localhost:5444/demo9
     password: AZERAZER1234
     driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  elasticsearch:
+    uris: http://localhost:9200
+    connection-timeout: 1s
+    socket-timeout: 1s
 
-#  liquibase:
-#    change-log:
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.data.elasticsearch.client.WIRE: DEBUG
+    org.springframework.data.elasticsearch.core: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

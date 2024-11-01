@@ -2,10 +2,8 @@ package org.example.demo9.service;
 
 import org.example.demo9.dto.TransactionDTO;
 import org.example.demo9.mapper.TransactionMapper;
-import org.example.demo9.model.BankAccount;
-import org.example.demo9.model.Transaction;
-import org.example.demo9.model.TransactionStatus;
-import org.example.demo9.model.TransactionType;
+import org.example.demo9.mapper.TransactionDocumentMapper;
+import org.example.demo9.model.*;
 import org.example.demo9.repository.BankAccountRepository;
 import org.example.demo9.repository.TransactionRepository;
 import org.example.demo9.repository.TransactionElasticsearchRepository;
@@ -14,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +24,7 @@ public class TransactionService {
     private final TransactionElasticsearchRepository elasticsearchRepository;
     private final BankAccountRepository bankAccountRepository;
     private final TransactionMapper transactionMapper;
+    private final TransactionDocumentMapper documentMapper;
 
     public TransactionDTO createTransaction(TransactionDTO transactionDTO) {
         BankAccount sourceAccount = bankAccountRepository.findById(transactionDTO.getSourceAccountId())
@@ -57,7 +55,8 @@ public class TransactionService {
         transaction = transactionRepository.save(transaction);
 
         // Index in Elasticsearch
-        elasticsearchRepository.save(transaction);
+        TransactionDocument transactionDocument = documentMapper.toDocument(transaction);
+        elasticsearchRepository.save(transactionDocument);
 
         return transactionMapper.toDTO(transaction);
     }
@@ -75,5 +74,20 @@ public class TransactionService {
         return transactionRepository.findById(id)
                 .map(transactionMapper::toDTO)
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
+    }
+
+    // New methods for Elasticsearch search capabilities
+    public List<TransactionDTO> searchTransactionsByDateRange(LocalDateTime start, LocalDateTime end) {
+        return elasticsearchRepository.findByTimestampBetween(start, end).stream()
+                .map(documentMapper::toEntity)
+                .map(transactionMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<TransactionDTO> searchTransactionsByStatus(String status) {
+        return elasticsearchRepository.findByStatus(status).stream()
+                .map(documentMapper::toEntity)
+                .map(transactionMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

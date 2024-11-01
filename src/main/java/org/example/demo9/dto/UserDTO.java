@@ -1,12 +1,12 @@
 package org.example.demo9.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
 import lombok.Data;
 import lombok.Builder;
 import org.example.demo9.model.Role;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
 import java.time.LocalDate;
 import java.util.Set;
 

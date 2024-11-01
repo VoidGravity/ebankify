@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 
 @Entity
@@ -24,13 +25,14 @@ public class BankAccount {
     @Column(nullable = false)
     private BigDecimal balance;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User owner;
 
     @Enumerated(EnumType.STRING)
     private AccountStatus status;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AccountType accountType;
 }
